@@ -1,4 +1,4 @@
-# Boilerplate Backend App using Kotlin and Vert.x
+# Starter BE App using Kotlin and Vert.x
 
 ## Technologies
 - Kotlin, Beautiful and Safe JVM Language with 100% Java Compatibility
@@ -10,7 +10,7 @@
 - Docker, Container Technology for Easier and Uniform application development and deployment
 
 ## API Docs
-- You can find the Postman Collection & Env JSON file on the docs/ folder that you can import to your Postman App
+- You can find the Postman Collection & Env JSON file on the docs/ folder
 
 ## Prerequisite
 ### To Build Application
@@ -28,7 +28,7 @@
 - Install JDK with SDKMAN -> 'sdk install java [identifier]'. For example, 'sdk install java 25.0.1-tem'
 - Make sure the JDK was successfully installed with running 'java -version'
 - Install PostgreSQL Server on your machine. You can use docker compose, with sample compose file in the services folder
-- Make sure you change the postgresql data path in the compose file corresponds with your local machine
+- Make sure you change the PostgreSQL data path in the compose file corresponds with your local machine
 - Run 'docker compose up'
 - Open the working directory (project) in the IntelliJ IDEA
 - Open Project Settings (Ctrl + Alt + S)
