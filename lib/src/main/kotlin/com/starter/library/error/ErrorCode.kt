@@ -2,13 +2,7 @@ package com.starter.library.error
 
 import id.yoframework.core.exception.DataInconsistentException
 import id.yoframework.core.exception.NullObjectException
-import id.yoframework.web.exception.BadRequestException
-import id.yoframework.web.exception.InvalidCredentials
-import id.yoframework.web.exception.NotAllowedException
-import id.yoframework.web.exception.NotFoundException
-import id.yoframework.web.exception.SecurityException
-import id.yoframework.web.exception.UnauthorizedException
-import id.yoframework.web.exception.ValidationException
+import id.yoframework.web.exception.*
 import io.netty.handler.codec.http.HttpResponseStatus
 import java.io.FileNotFoundException
 

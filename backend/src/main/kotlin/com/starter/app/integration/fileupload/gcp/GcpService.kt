@@ -14,11 +14,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.core.file.FileSystem
 import io.vertx.core.json.Json
 import io.vertx.ext.web.FileUpload
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.*
 import java.io.FileInputStream
 import javax.inject.Inject
 import javax.inject.Named
@@ -112,7 +108,7 @@ class GcpService @Inject constructor(
             coroutineScope {
                 async(fileUploadPool) { post(bucketName, it) }
             }
-        }.map { it.await() }
+        }.awaitAll()
     }
 
     suspend fun uploadFile(
@@ -167,7 +163,7 @@ class GcpService @Inject constructor(
             coroutineScope {
                 async(fileUploadPool) { delete(bucketName, it) }
             }
-        }.map { it.await() }
+        }.awaitAll()
     }
 
     fun deleteFile(bucketName: String, fileName: String): String {

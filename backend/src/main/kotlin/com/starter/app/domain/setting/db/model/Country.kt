@@ -5,17 +5,9 @@ import com.starter.app.domain.setting.plain.CountryCompact
 import com.starter.app.domain.setting.plain.CountryList
 import id.yoframework.core.model.Model
 import id.yoframework.extra.snowflake.nextAlpha
+import io.ebean.annotation.*
 import io.ebean.annotation.Cache
-import io.ebean.annotation.DocCode
-import io.ebean.annotation.DocSortable
-import io.ebean.annotation.WhenCreated
-import io.ebean.annotation.WhenModified
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
@@ -62,7 +54,7 @@ class Country() : Model {
     @NotBlank(message = "External ID could not be blank.")
     @Size(max = 16, message = "External ID could not be more than 16 characters.")
     @Pattern(
-        regexp = "^[a-z0-9]+\$",
+        regexp = "^[a-z0-9]+$",
         message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9)."
     )
     lateinit var externalId: String
@@ -70,7 +62,7 @@ class Country() : Model {
     @DocCode
     @Size(max = 2, message = "Alpha 2 code could not be more than 2 characters.")
     @Pattern(
-        regexp = "^[A-Z]+\$",
+        regexp = "^[A-Z]+$",
         message = "Alpha 2 code can only contain uppercase letters."
     )
     var alpha2Code: String? = null
@@ -78,7 +70,7 @@ class Country() : Model {
     @DocCode
     @Size(max = 3, message = "Alpha 3 code could not be more than 3 characters.")
     @Pattern(
-        regexp = "^[A-Z]+\$",
+        regexp = "^[A-Z]+$",
         message = "Alpha 3 code can only contain uppercase letters."
     )
     var alpha3Code: String? = null
@@ -88,7 +80,7 @@ class Country() : Model {
     @NotBlank(message = "Name could not be blank.")
     @Size(max = 100, message = "Name could not be more than 100 characters.")
     @Pattern(
-        regexp = "^[A-Za-z0-9 ]+\$",
+        regexp = "^[A-Za-z0-9 ]+$",
         message = "Name can only contain alphanumeric characters (letters A-Z, numbers 0-9) and space."
     )
     lateinit var name: String
@@ -97,7 +89,7 @@ class Country() : Model {
     @NotBlank(message = "Calling code could not be blank.")
     @Size(max = 10, message = "Calling code could not be more than 10 characters.")
     @Pattern(
-        regexp = "^[0-9+ ]+\$",
+        regexp = "^[0-9+ ]+$",
         message = "Calling code can only contain numeric characters (numbers 0-9), space, and + sign."
     )
     var callingCode: String? = null

@@ -39,7 +39,7 @@ class InternalSetting() : Model {
     @NotBlank(message = "Setting key could not be blank.")
     @Size(max = 150, message = "Setting key could not be more than 150 characters.")
     @Pattern(
-        regexp = "^[A-Za-z0-9-_& ]+\$",
+        regexp = "^[A-Za-z0-9-_& ]+$",
         message = "Setting key can only contain alphanumeric characters " +
                 "(letters A-Z, numbers 0-9), underscore, and space."
     )
@@ -48,7 +48,7 @@ class InternalSetting() : Model {
     @NotBlank(message = "Setting value could not be blank.")
     @Size(max = 50, message = "Setting value could not be more than 50 characters.")
     @Pattern(
-        regexp = "^[A-Za-z0-9]+\$",
+        regexp = "^[A-Za-z0-9]+$",
         message = "Setting value can only contain alphanumeric characters (letters A-Z, numbers 0-9)."
     )
     lateinit var settingValue: String

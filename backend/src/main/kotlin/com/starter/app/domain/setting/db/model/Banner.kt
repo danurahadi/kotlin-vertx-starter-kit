@@ -58,7 +58,7 @@ class Banner() : Model {
     @NotBlank(message = "External ID could not be blank.")
     @Size(max = 16, message = "External ID could not be more than 16 chars.")
     @Pattern(
-        regexp = "^[a-z0-9]+\$",
+        regexp = "^[a-z0-9]+$",
         message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9)."
     )
     lateinit var externalId: String

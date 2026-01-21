@@ -31,14 +31,11 @@ import kotlin.system.exitProcess
 @DelicateCoroutinesApi
 object Application {
     private const val DELAY_TIME = 2000L
-//    companion object {
         @JvmStatic
         fun main(args: Array<String>) = runBlocking {
 
             val log = logger(Application::class)
             try {
-                // At application startup, before any validation
-//                System.setProperty("jakarta.el.ExpressionFactory", "org.glassfish.expressionlang.ExpressionFactoryImpl")
 
                 val vertx = buildVertx()
                 val config = vertx.retrieveConfig(jsonConfig("application-config.json"))
@@ -122,8 +119,6 @@ object Application {
                 }
                     .load()
 
-//                flyway.baseline()
-
                 // Start the migration
                 val migrateResp = flyway.migrate()
                 log.info("Flyway migration response : ${migrateResp.migrationsExecuted} migrations executed")
@@ -159,5 +154,4 @@ object Application {
                 exitProcess(1)
             }
         }
-//    }
 }

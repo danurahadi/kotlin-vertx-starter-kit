@@ -24,7 +24,7 @@ class MainVerticle @Inject constructor(
     private val mainController: MainController
 ) : CoroutineVerticle() {
 
-    private val serverName = "Boilerplate Backend"
+    private val serverName = "Starter Backend App"
     private val log = logger(MainVerticle::class)
 
     private fun resolvePort(): Int {

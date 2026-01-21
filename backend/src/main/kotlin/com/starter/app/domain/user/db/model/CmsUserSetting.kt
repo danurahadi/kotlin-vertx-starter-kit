@@ -4,11 +4,7 @@ import com.starter.app.domain.user.plain.UserSettings
 import id.yoframework.core.model.Model
 import io.ebean.annotation.WhenCreated
 import io.ebean.annotation.WhenModified
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
 import java.time.LocalDateTime

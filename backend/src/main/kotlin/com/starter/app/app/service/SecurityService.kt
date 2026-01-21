@@ -11,12 +11,7 @@ import com.starter.app.domain.user.db.repository.CmsUserRepository
 import id.yoframework.core.json.get
 import id.yoframework.extra.extension.password.PlainPassword
 import id.yoframework.extra.extension.password.match
-import id.yoframework.web.exception.BadRequestException
-import id.yoframework.web.exception.InvalidCredentials
-import id.yoframework.web.exception.ValidationException
-import id.yoframework.web.exception.orBadRequest
-import id.yoframework.web.exception.orDataError
-import id.yoframework.web.exception.orUnauthorized
+import id.yoframework.web.exception.*
 import io.ebean.Transaction
 import io.vertx.core.json.JsonObject
 import io.vertx.ext.auth.User
@@ -119,39 +114,9 @@ class SecurityService @Inject constructor(
     private suspend fun socialAuthenticate(authInfo: JsonObject): AuthenticatedSocialUser {
 
         val email = authInfo.get<String>("email") orBadRequest "Invalid auth info."
-//        val platformStr = authInfo.get<String>("platform") orBadRequest "Invalid auth info."
-
-//        val platform = try {
-//            SocialPlatform.valueOf(platformStr)
-//        } catch (ex: Exception) {
-//            throw BadRequestException("Invalid platform body param.")
-//        }
         val user = cmsUserRepository.findByIdentity(email).findOne()
 
         return if (user != null) {
-//            val member = user.member orForbidden "Social Log In only allowed for member."
-//            when (platform) {
-//                SocialPlatform.GOOGLE -> {
-//                    if (!member.connectedToGoogle) {
-//                        throw BadRequestException("User account not yet connected with Google account.")
-//                    }
-//                }
-//                SocialPlatform.FACEBOOK -> {
-//                    if (!member.connectedToFacebook) {
-//                        throw BadRequestException("User account not yet connected with Facebook account.")
-//                    }
-//                }
-//                SocialPlatform.TWITTER -> {
-//                    if (!member.connectedToTwitter) {
-//                        throw BadRequestException("User account not yet connected with Twitter account.")
-//                    }
-//                }
-//                SocialPlatform.APPLE -> {
-//                    if (!member.connectedToApple) {
-//                        throw BadRequestException("User account not yet connected with Apple account.")
-//                    }
-//                }
-//            }
 
             if (user.status == CmsUserStatus.SUSPENDED) {
                 throw InvalidCredentials("Your account has been suspended. Please contact administrator.")

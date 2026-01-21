@@ -13,11 +13,7 @@ import io.vertx.core.buffer.Buffer
 import io.vertx.core.file.FileSystem
 import io.vertx.ext.web.FileUpload
 import io.vertx.ext.web.client.WebClient
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.*
 import java.io.File
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -125,6 +121,6 @@ class FileUploadService @Inject constructor(
             coroutineScope {
                 async(fileUploadPool) { write(directory, it) }
             }
-        }.map { it.await() }
+        }.awaitAll()
     }
 }

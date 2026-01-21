@@ -22,11 +22,7 @@ import id.yoframework.core.extension.logger.logger
 import id.yoframework.extra.snowflake.nextAlpha
 import id.yoframework.web.exception.ValidationException
 import io.vertx.core.json.Json
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.newFixedThreadPoolContext
+import kotlinx.coroutines.*
 import net.coobird.thumbnailator.Thumbnails
 import org.apache.commons.io.FileUtils
 import java.io.File
@@ -199,7 +195,7 @@ class AwsS3Service @Inject constructor(
             val originalFilePath = "$folderName/originals/$fileName"
             val imageFile = try {
                 ImageIO.read(webpFile)
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 null
             }
 
@@ -218,7 +214,7 @@ class AwsS3Service @Inject constructor(
                             .toFile(webpFile)
                     }
                     false
-                } catch (ex: Exception) {
+                } catch (_: Exception) {
                     true
                 }
             } else {
@@ -261,7 +257,7 @@ class AwsS3Service @Inject constructor(
                             .outputQuality(1.0)
                             .toFile(webpFile)
                     }
-                } catch (ex: Exception) {
+                } catch (_: Exception) {
                     // continue to upload
                 }
 
@@ -513,7 +509,7 @@ class AwsS3Service @Inject constructor(
                     }
                 }
             }
-        }.map { it.await() }
+        }.awaitAll()
     }
 
     suspend fun downloadFiles(dataIdsWithMediaLinks: List<Pair<DataId?, AwsS3MediaLink?>>): List<AwsS3Migration?> {
@@ -535,7 +531,7 @@ class AwsS3Service @Inject constructor(
                     }
                 }
             }
-        }.map { it.await() }
+        }.awaitAll()
     }
 
     suspend fun deleteFiles(mediaLinks: List<String>): Boolean {

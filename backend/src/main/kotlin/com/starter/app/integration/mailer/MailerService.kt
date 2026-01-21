@@ -14,12 +14,7 @@ import jakarta.ws.rs.client.ClientBuilder
 import jakarta.ws.rs.client.Entity
 import jakarta.ws.rs.core.Form
 import jakarta.ws.rs.core.MediaType
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.async
-import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.*
 import org.glassfish.jersey.client.ClientConfig
 import org.glassfish.jersey.client.ClientResponse
 import org.glassfish.jersey.client.authentication.HttpAuthenticationFeature
@@ -178,7 +173,7 @@ class MailerService @Inject constructor(
                 "MAILER_URL" to mailerUrl,
                 "SENDER" to sender,
                 "SUBJECT" to subject,
-//                "HTML" to html,
+//                "HTML" to HTML,
                 "DESTINATION" to destinations,
                 "RESPONSE_BODY" to body,
                 "RESPONSE_CODE" to "${clientResponse.status}"
@@ -192,7 +187,6 @@ class MailerService @Inject constructor(
                 "MAILER_URL" to mailerUrl,
                 "SENDER" to sender,
                 "SUBJECT" to subject,
-//                "HTML" to html,
                 "DESTINATION" to destinations
             )
 

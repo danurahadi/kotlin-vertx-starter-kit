@@ -19,5 +19,4 @@ fun Logger.fileUploadLog(log: LogType, vararg params: Pair<String, Any>) {
     this.log(log, defaultParam = defaultParams, params = params)
 }
 
-typealias FileName = String
 typealias FilePath = String

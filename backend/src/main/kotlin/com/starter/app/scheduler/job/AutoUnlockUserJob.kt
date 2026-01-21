@@ -6,11 +6,7 @@ import id.yoframework.core.extension.logger.ERROR
 import id.yoframework.core.extension.logger.INFO
 import id.yoframework.core.extension.logger.logger
 import id.yoframework.quartz.getData
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ObsoleteCoroutinesApi
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 import org.quartz.Job
 import org.quartz.JobExecutionContext
 

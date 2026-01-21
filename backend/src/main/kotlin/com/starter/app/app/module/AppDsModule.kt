@@ -77,11 +77,6 @@ class AppDsModule {
         roleRepository: RoleRepository,
         accessRoleRepository: AccessRoleRepository,
         moduleRepository: ModuleRepository,
-//        cmsUserRepository: CmsUserRepository,
-//        cmsUserSettingRepository: CmsUserSettingRepository,
-//        adminRepository: AdminRepository,
-//        adminNotificationRepository: AdminNotificationRepository,
-//        activityLogRepository: ActivityLogRepository
     ): suspend () -> Unit {
         return {
 
@@ -562,7 +557,7 @@ class AppDsModule {
             val adminNotifs = mutableListOf<AdminNotification>()
             val activityLogs = mutableListOf<ActivityLog>()
 
-            admins.map { a ->
+            admins.forEach { a ->
                 for (i in 1..100) {
                     val adminNotif = AdminNotification(
                         admin = a,
@@ -573,7 +568,7 @@ class AppDsModule {
             }
             adminNotificationRepository.insertAll(adminNotifs)
 
-            admins.map { a ->
+            admins.forEach { a ->
                 for (i in 1..100) {
                     val activityLog = ActivityLog(
                         actor = a,

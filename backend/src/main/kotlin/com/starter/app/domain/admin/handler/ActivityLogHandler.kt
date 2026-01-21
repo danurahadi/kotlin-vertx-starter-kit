@@ -75,7 +75,7 @@ class ActivityLogHandler @Inject constructor(
         val startDate = if (startDateStr != "") {
             try {
                 startDateStr.toLocalDate("yyyy-MM-dd")
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 throw BadRequestException("Invalid start date query param.")
             }
         } else null
@@ -83,7 +83,7 @@ class ActivityLogHandler @Inject constructor(
         val endDate = if (endDateStr != "") {
             try {
                 endDateStr.toLocalDate("yyyy-MM-dd")
-            } catch (ex: Exception) {
+            } catch (_: Exception) {
                 throw BadRequestException("Invalid end date query param.")
             }
         } else null

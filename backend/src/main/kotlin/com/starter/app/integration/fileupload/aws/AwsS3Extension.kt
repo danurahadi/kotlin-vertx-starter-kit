@@ -19,6 +19,5 @@ fun Logger.awsS3Log(log: LogType, vararg params: Pair<String, Any>) {
     this.log(log, defaultParam = defaultParams, params = params)
 }
 
-typealias AwsS3Filename = String
 typealias AwsS3MediaLink = String
 typealias DataId = Long

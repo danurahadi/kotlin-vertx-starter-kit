@@ -7,12 +7,7 @@ import id.yoframework.core.model.Model
 import id.yoframework.extra.snowflake.nextAlpha
 import io.ebean.annotation.WhenCreated
 import io.ebean.annotation.WhenModified
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
@@ -52,18 +47,18 @@ class Role() : Model {
     @Column(unique = true)
     @NotBlank(message = "External ID could not be blank.")
     @Size(max = 16, message = "External ID could not be more than 16 chars.")
-    @Pattern(regexp = "^[a-z0-9]+\$", message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9).")
+    @Pattern(regexp = "^[a-z0-9]+$", message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9).")
     lateinit var externalId: String
 
     @Column(unique = true)
     @NotBlank(message = "Name could not be blank.")
     @Size(max = 50, message = "Name could not be more than 50 characters.")
-    @Pattern(regexp = "^[A-Z-]+\$", message = "Name can only contain uppercase letter characters (letters A-Z) and dash.")
+    @Pattern(regexp = "^[A-Z-]+$", message = "Name can only contain uppercase letter characters (letters A-Z) and dash.")
     lateinit var name: String
 
     @NotBlank(message = "Alias could not be blank.")
     @Size(max = 50, message = "Alias could not be more than 50 characters.")
-    @Pattern(regexp = "^[A-Za-z0-9-& ]+\$", message = "Alias can only contain alphanumeric characters (letters A-Z, numbers 0-9), dash, and space.")
+    @Pattern(regexp = "^[A-Za-z0-9-& ]+$", message = "Alias can only contain alphanumeric characters (letters A-Z, numbers 0-9), dash, and space.")
     lateinit var alias: String
 
     @Size(max = 255, message = "Description could not be more than 255 characters.")

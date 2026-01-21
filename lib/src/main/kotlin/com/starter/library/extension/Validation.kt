@@ -57,7 +57,7 @@ fun List<Model>.validate(): Boolean {
     val validator = factory.validator
     val objectList = this
 
-    objectList.map { obj ->
+    objectList.forEach { obj ->
         val violations = validator.validate(obj)
         if (violations.isNotEmpty()) {
             val validationMessages = violations

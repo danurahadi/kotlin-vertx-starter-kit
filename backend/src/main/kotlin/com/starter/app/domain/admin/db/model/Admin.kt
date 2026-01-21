@@ -9,20 +9,9 @@ import com.starter.app.domain.user.plain.LogActor
 import com.starter.app.domain.user.plain.UserResponse
 import id.yoframework.core.model.Model
 import id.yoframework.extra.snowflake.nextAlpha
+import io.ebean.annotation.*
 import io.ebean.annotation.Cache
-import io.ebean.annotation.DbDefault
-import io.ebean.annotation.DocCode
-import io.ebean.annotation.DocStore
-import io.ebean.annotation.DocStoreMode
-import io.ebean.annotation.WhenCreated
-import io.ebean.annotation.WhenModified
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
@@ -77,7 +66,7 @@ class Admin(): Model {
     @NotBlank(message = "External ID could not be blank.")
     @Size(max = 16, message = "External ID could not be more than 16 characters.")
     @Pattern(
-        regexp = "^[a-z0-9]+\$",
+        regexp = "^[a-z0-9]+$",
         message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9)."
     )
     lateinit var externalId: String

@@ -11,30 +11,15 @@ import com.starter.app.domain.user.plain.UserList
 import com.starter.app.domain.user.plain.UserResponse
 import id.yoframework.extra.snowflake.nextAlpha
 import id.yoframework.web.security.SecurityModel
+import io.ebean.annotation.*
 import io.ebean.annotation.Cache
-import io.ebean.annotation.DbDefault
-import io.ebean.annotation.DocCode
-import io.ebean.annotation.DocStore
-import io.ebean.annotation.DocStoreMode
-import io.ebean.annotation.WhenCreated
-import io.ebean.annotation.WhenModified
 import io.vertx.core.json.JsonObject
 import io.vertx.kotlin.core.json.json
 import io.vertx.kotlin.core.json.obj
-import jakarta.persistence.CascadeType
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
-import jakarta.validation.constraints.Email
+import jakarta.persistence.*
+import jakarta.validation.constraints.*
 import jakarta.validation.constraints.Max
 import jakarta.validation.constraints.Min
-import jakarta.validation.constraints.NotBlank
-import jakarta.validation.constraints.Pattern
-import jakarta.validation.constraints.Size
 import java.time.LocalDateTime
 
 /**
@@ -124,7 +109,7 @@ class CmsUser() : SecurityModel {
     @NotBlank(message = "External ID could not be blank.")
     @Size(max = 16, message = "External ID could not be more than 16 chars.")
     @Pattern(
-        regexp = "^[a-z0-9]+\$",
+        regexp = "^[a-z0-9]+$",
         message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9)."
     )
     lateinit var externalId: String
@@ -139,7 +124,7 @@ class CmsUser() : SecurityModel {
     @NotBlank(message = "Username could not be blank.")
     @Size(min = 4, max = 50, message = "Username length must be between 4 - 50 chars.")
     @Pattern(
-        regexp = "^[a-z0-9_]+\$",
+        regexp = "^[a-z0-9_]+$",
         message = "Username can only contain lowercase alphanumeric characters " +
                 "(letters A-Z, numbers 0-9) and underscores."
     )
@@ -149,7 +134,7 @@ class CmsUser() : SecurityModel {
     @NotBlank(message = "Password could not be blank.")
     @Size(max = 500, message = "Password could not be more than 500 chars.")
     @Pattern(
-        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*[\\d])[A-Za-z\\d\\W]{8,100}\$",
+        regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[A-Za-z\\d\\W]{8,100}$",
         message = "Password must contain at least one uppercase, one lowercase, one numeral, and eight characters."
     )
     lateinit var password: String
@@ -165,7 +150,7 @@ class CmsUser() : SecurityModel {
     @DocCode
     @Column(unique = true)
     @Size(min = 8, max = 50, message = "Phone number length must be between 8 - 50 characters.")
-    @Pattern(regexp = "^[0-9+]+\$", message = "Phone number can only contain numeric characters (0-9).")
+    @Pattern(regexp = "^[0-9+]+$", message = "Phone number can only contain numeric characters (0-9).")
     var phone: String? = null
 
     @DocCode

@@ -8,13 +8,7 @@ import id.yoframework.extra.snowflake.nextAlpha
 import io.ebean.annotation.DbDefault
 import io.ebean.annotation.WhenCreated
 import io.ebean.annotation.WhenModified
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
-import jakarta.persistence.Id
-import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToOne
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.Pattern
 import jakarta.validation.constraints.Size
@@ -66,7 +60,7 @@ class ApiKey() : Model {
     @Column(unique = true)
     @NotBlank(message = "External ID could not be blank.")
     @Size(max = 16, message = "External ID could not be more than 16 chars.")
-    @Pattern(regexp = "^[a-z0-9]+\$", message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9).")
+    @Pattern(regexp = "^[a-z0-9]+$", message = "External ID can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9).")
     lateinit var externalId: String
 
     @OneToOne(fetch = FetchType.EAGER)
@@ -84,7 +78,7 @@ class ApiKey() : Model {
     var expiredTime: LocalDateTime? = null
 
     @Size(max = 50, message = "IP Address could not be more than 50 characters.")
-    @Pattern(regexp = "^[a-z0-9:.]+\$", message = "IP Address can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9), dot, and colon.")
+    @Pattern(regexp = "^[a-z0-9:.]+$", message = "IP Address can only contain lowercase alphanumeric characters (letters A-Z, numbers 0-9), dot, and colon.")
     lateinit var ipAddress: String
 
     @Size(max = 50, message = "Location could not be more than 50 characters.")
@@ -100,7 +94,7 @@ class ApiKey() : Model {
     var regToken: String? = null
 
     @Size(max = 16, message = "IMEI could not be more than 16 characters.")
-    @Pattern(regexp = "^[0-9]+\$", message = "IMEI can only contain numeric characters (numbers 0-9).")
+    @Pattern(regexp = "^[0-9]+$", message = "IMEI can only contain numeric characters (numbers 0-9).")
     var imei: String? = null
 
     @ManyToOne(fetch = FetchType.EAGER)
