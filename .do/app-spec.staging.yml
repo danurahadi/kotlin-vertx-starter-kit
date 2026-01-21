@@ -1,0 +1,252 @@
+name: starter-be-rc
+region: sgp1
+domains:
+  - domain: rc-api.starter.com
+databases:
+  - cluster_name: db-starter
+    db_name: starter_db_staging
+    db_user: doadmin
+    engine: PG
+    name: db-starter
+    production: true
+    version: "18"
+services:
+  - name: app
+    http_port: 7000
+    health_check:
+      http_path: /
+      port: 7000
+    instance_count: 1
+    instance_size_slug: apps-d-2vcpu-4gb
+    image:
+      registry_type: DOCKER_HUB
+      registry: docker_hub_registry
+      repository: docker_hub_repository
+      registry_credentials: "${DOCKERHUB_USERNAME}:${DOCKERHUB_TOKEN}"
+      digest: ${IMAGE_DIGEST}
+    envs:
+      - key: ENV
+        scope: RUN_TIME
+        value: ${ENV}
+      - key: HTTP_PORT
+        scope: RUN_TIME
+        value: ${HTTP_PORT}
+      - key: APP_NAME
+        scope: RUN_TIME
+        value: ${APP_NAME}
+      - key: COMPANY_EMAIL
+        scope: RUN_TIME
+        value: ${COMPANY_EMAIL}
+      - key: COMPANY_PHONE
+        scope: RUN_TIME
+        value: ${COMPANY_PHONE}
+      - key: COMPANY_FACEBOOK_LINK
+        scope: RUN_TIME
+        value: ${COMPANY_FACEBOOK_LINK}
+      - key: COMPANY_INSTAGRAM_LINK
+        scope: RUN_TIME
+        value: ${COMPANY_INSTAGRAM_LINK}
+      - key: DB_URL
+        scope: RUN_TIME
+        value: ${DB_URL}
+      - key: DB_USER
+        scope: RUN_TIME
+        value: ${DB_USER}
+      - key: DB_PASSWORD
+        scope: RUN_TIME
+        value: ${DB_PASSWORD}
+      - key: DB_DRIVER_CLASSNAME
+        scope: RUN_TIME
+        value: ${DB_DRIVER_CLASSNAME}
+      - key: CURRENT_DB_MIGRATION_NAME
+        scope: RUN_TIME
+        value: ${CURRENT_DB_MIGRATION_NAME}
+      - key: CURRENT_DB_MIGRATION_VERSION
+        scope: RUN_TIME
+        value: ${CURRENT_DB_MIGRATION_VERSION}
+      - key: CURRENT_DB_MIGRATION_DROPS_FOR
+        scope: RUN_TIME
+        value: ${CURRENT_DB_MIGRATION_DROPS_FOR}
+      - key: FLYWAY_DB_USER
+        scope: RUN_TIME
+        value: ${FLYWAY_DB_USER}
+      - key: FLYWAY_DB_PASSWORD
+        scope: RUN_TIME
+        value: ${FLYWAY_DB_PASSWORD}
+      - key: ENABLE_DATA_INITIALIZER
+        scope: RUN_TIME
+        value: ${ENABLE_DATA_INITIALIZER}
+      - key: MAX_LOGIN_ATTEMPT
+        scope: RUN_TIME
+        value: ${MAX_LOGIN_ATTEMPT}
+      - key: AUTO_UNLOCKED_ACCOUNT_AFTER
+        scope: RUN_TIME
+        value: ${AUTO_UNLOCKED_ACCOUNT_AFTER}
+      - key: CORS_ALLOWED_ORIGIN_PATTERN
+        scope: RUN_TIME
+        value: ${CORS_ALLOWED_ORIGIN_PATTERN}
+      - key: AES_ENCRYPTION_TOKEN
+        scope: RUN_TIME
+        value: ${AES_ENCRYPTION_TOKEN}
+      - key: JWT_AUTH_KEYSTORE_PATH
+        scope: RUN_TIME
+        value: ${JWT_AUTH_KEYSTORE_PATH}
+      - key: JWT_AUTH_KEYSTORE_PASSWORD
+        scope: RUN_TIME
+        value: ${JWT_AUTH_KEYSTORE_PASSWORD}
+      - key: JWT_AUTH_EXPIRES_IN_SECONDS
+        scope: RUN_TIME
+        value: ${JWT_AUTH_EXPIRES_IN_SECONDS}
+      - key: JWT_AUTH_ALGORITHM
+        scope: RUN_TIME
+        value: ${JWT_AUTH_ALGORITHM}
+      - key: FE_ADMIN_BASE_URL
+        scope: RUN_TIME
+        value: ${FE_ADMIN_BASE_URL}
+      - key: API_BASE_URL
+        scope: RUN_TIME
+        value: ${API_BASE_URL}
+      - key: UPLOADED_FILE_RETENTION_PERIOD_IN_HOURS
+        scope: RUN_TIME
+        value: ${UPLOADED_FILE_RETENTION_PERIOD_IN_HOURS}
+      - key: DISABLE_SCHEDULER
+        scope: RUN_TIME
+        value: ${DISABLE_SCHEDULER}
+      - key: TEMP_FILE_CRON_EXPRESSION
+        scope: RUN_TIME
+        value: ${TEMP_FILE_CRON_EXPRESSION}
+      - key: AUTO_UNLOCK_USER_CRON_EXPRESSION
+        scope: RUN_TIME
+        value: ${AUTO_UNLOCK_USER_CRON_EXPRESSION}
+      - key: DISABLE_EVENTBUS_SERVICE
+        scope: RUN_TIME
+        value: ${DISABLE_EVENTBUS_SERVICE}
+      - key: EVENTBUS_SEND_TIMEOUT
+        scope: RUN_TIME
+        value: ${EVENTBUS_SEND_TIMEOUT}
+      - key: MAX_FILE_SIZE_IN_MB
+        scope: RUN_TIME
+        value: ${MAX_FILE_SIZE_IN_MB}
+      - key: MAX_IMAGE_FILE_SIZE_IN_MB
+        scope: RUN_TIME
+        value: ${MAX_IMAGE_FILE_SIZE_IN_MB}
+      - key: AVATAR_THUMBNAIL_SIZE_IN_PIXEL
+        scope: RUN_TIME
+        value: ${AVATAR_THUMBNAIL_SIZE_IN_PIXEL}
+      - key: AVATAR_ORIGINAL_SIZE_IN_PIXEL
+        scope: RUN_TIME
+        value: ${AVATAR_ORIGINAL_SIZE_IN_PIXEL}
+      - key: BANNER_IMAGE_ORIGINAL_SIZE_IN_PIXEL
+        scope: RUN_TIME
+        value: ${BANNER_IMAGE_ORIGINAL_SIZE_IN_PIXEL}
+      - key: SLIDESHOW_IMAGE_ORIGINAL_SIZE_IN_PIXEL
+        scope: RUN_TIME
+        value: ${SLIDESHOW_IMAGE_ORIGINAL_SIZE_IN_PIXEL}
+      - key: SUPPORT_EMAIL
+        scope: RUN_TIME
+        value: ${SUPPORT_EMAIL}
+      - key: DISABLE_MAILER
+        scope: RUN_TIME
+        value: ${DISABLE_MAILER}
+      - key: MAILER_SENDER
+        scope: RUN_TIME
+        value: ${MAILER_SENDER}
+      - key: MAILER_USERNAME
+        scope: RUN_TIME
+        value: ${MAILER_USERNAME}
+      - key: MAILER_PASSWORD
+        scope: RUN_TIME
+        value: ${MAILER_PASSWORD}
+      - key: MAILER_URL
+        scope: RUN_TIME
+        value: ${MAILER_URL}
+      - key: DISABLE_TWILIO_API
+        scope: RUN_TIME
+        value: ${DISABLE_TWILIO_API}
+      - key: TWILIO_ACCOUNT_SID
+        scope: RUN_TIME
+        value: ${TWILIO_ACCOUNT_SID}
+      - key: TWILIO_AUTH_TOKEN
+        scope: RUN_TIME
+        value: ${TWILIO_AUTH_TOKEN}
+      - key: TWILIO_REGION
+        scope: RUN_TIME
+        value: ${TWILIO_REGION}
+      - key: TWILIO_EDGE
+        scope: RUN_TIME
+        value: ${TWILIO_EDGE}
+      - key: TWILIO_SENDER_NAME
+        scope: RUN_TIME
+        value: ${TWILIO_SENDER_NAME}
+      - key: TWILIO_SENDER_PHONE_NUMBER
+        scope: RUN_TIME
+        value: ${TWILIO_SENDER_PHONE_NUMBER}
+      - key: DISABLE_AWS_S3
+        scope: RUN_TIME
+        value: ${DISABLE_AWS_S3}
+      - key: AWS_S3_BASE_URL
+        scope: RUN_TIME
+        value: ${AWS_S3_BASE_URL}
+      - key: AWS_S3_ALIAS_URL
+        scope: RUN_TIME
+        value: ${AWS_S3_ALIAS_URL}
+      - key: AWS_S3_ACCESS_KEY
+        scope: RUN_TIME
+        value: ${AWS_S3_ACCESS_KEY}
+      - key: AWS_S3_SECRET_KEY
+        scope: RUN_TIME
+        value: ${AWS_S3_SECRET_KEY}
+      - key: AWS_S3_REGION_NAME
+        scope: RUN_TIME
+        value: ${AWS_S3_REGION_NAME}
+      - key: AWS_S3_BUCKET_NAME
+        scope: RUN_TIME
+        value: ${AWS_S3_BUCKET_NAME}
+      - key: AWS_S3_AVATAR_FOLDER
+        scope: RUN_TIME
+        value: ${AWS_S3_AVATAR_FOLDER}
+      - key: AWS_S3_BANNERS_FOLDER
+        scope: RUN_TIME
+        value: ${AWS_S3_BANNERS_FOLDER}
+      - key: AWS_S3_LOGO_FOLDER
+        scope: RUN_TIME
+        value: ${AWS_S3_LOGO_FOLDER}
+      - key: DISABLE_GOOGLE_API
+        scope: RUN_TIME
+        value: ${DISABLE_GOOGLE_API}
+      - key: GOOGLE_API_CLIENT_ID
+        scope: RUN_TIME
+        value: ${GOOGLE_API_CLIENT_ID}
+      - key: GOOGLE_API_CLIENT_SECRET
+        scope: RUN_TIME
+        value: ${GOOGLE_API_CLIENT_SECRET}
+      - key: GOOGLE_BASE_URL
+        scope: RUN_TIME
+        value: ${GOOGLE_BASE_URL}
+      - key: GOOGLE_RECAPTCHA_SERVER_KEY
+        scope: RUN_TIME
+        value: ${GOOGLE_RECAPTCHA_SERVER_KEY}
+      - key: DISABLE_FIREBASE
+        scope: RUN_TIME
+        value: ${DISABLE_FIREBASE}
+      - key: FIREBASE_PROJECT_ID
+        scope: RUN_TIME
+        value: ${FIREBASE_PROJECT_ID}
+      - key: FIREBASE_API_BASE_URL
+        scope: RUN_TIME
+        value: ${FIREBASE_API_BASE_URL}
+      - key: FIREBASE_SERVICE_ACCOUNT_KEY
+        scope: RUN_TIME
+        value: ${FIREBASE_SERVICE_ACCOUNT_KEY}
+      - key: FIREBASE_WEB_PUSH_TTL
+        scope: RUN_TIME
+        value: ${FIREBASE_WEB_PUSH_TTL}
+      - key: FIREBASE_WEB_PUSH_URGENCY
+        scope: RUN_TIME
+        value: ${FIREBASE_WEB_PUSH_URGENCY}
+      - key: DISABLE_SLACK_API
+        scope: RUN_TIME
+        value: ${DISABLE_SLACK_API}
+      - key: SLACK_WEBHOOK_URL
+        scope: RUN_TIME
+        value: ${SLACK_WEBHOOK_URL}

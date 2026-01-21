@@ -1,0 +1,130 @@
+name: Starter - Production CI/CD
+
+on:
+  push:
+    branches:
+      - production
+
+env:
+  ENV: PRODUCTION
+  HTTP_PORT: 7000
+  APP_NAME: "Starter App"
+  COMPANY_EMAIL: "company_email"
+  COMPANY_PHONE: "company_phone"
+  COMPANY_FACEBOOK_LINK: "company_fb_link"
+  COMPANY_INSTAGRAM_LINK: "company_ig_link"
+  DB_URL: ${{ secrets.PRODUCTION_DATABASE_URL }}
+  DB_USER: ${{ secrets.PRODUCTION_DATABASE_USER }}
+  DB_PASSWORD: ${{ secrets.PRODUCTION_DATABASE_PASSWORD }}
+  DB_DRIVER_CLASSNAME: org.postgresql.Driver
+  CURRENT_DB_MIGRATION_NAME: initial version
+  CURRENT_DB_MIGRATION_VERSION: "0.1"
+  CURRENT_DB_MIGRATION_DROPS_FOR: ""
+  FLYWAY_DB_USER: ${{ secrets.PRODUCTION_FLYWAY_DATABASE_USER }}
+  FLYWAY_DB_PASSWORD: ${{ secrets.PRODUCTION_FLYWAY_DATABASE_PASSWORD }}
+  ENABLE_DATA_INITIALIZER: false
+  MAX_LOGIN_ATTEMPT: 5
+  AUTO_UNLOCKED_ACCOUNT_AFTER: 1
+  CORS_ALLOWED_ORIGIN_PATTERN: ^http:\/\/([a-zA-Z0-9-]+\.)?localhost(:[0-9]+)?\/?$|^https:\/\/([a-zA-Z0-9-]+\.)?starter\.com(:[0-9]+)?\/?$
+  AES_ENCRYPTION_TOKEN: Starter79-80b2-f8a74e
+  JWT_AUTH_KEYSTORE_PATH: keystore.jceks
+  JWT_AUTH_KEYSTORE_PASSWORD: HL-Core-Team-101019
+  JWT_AUTH_EXPIRES_IN_SECONDS: 86400
+  JWT_AUTH_ALGORITHM: HS256
+  FE_ADMIN_BASE_URL: https://starter.com
+  API_BASE_URL: https://rc-api.starter.com
+  UPLOADED_FILE_RETENTION_PERIOD_IN_HOURS: 24
+  DISABLE_SCHEDULER: true
+  TEMP_FILE_CRON_EXPRESSION: 0 0 0/1 1/1 * ? *
+  AUTO_UNLOCK_USER_CRON_EXPRESSION: 0 0/5 * ? * * *
+  DISABLE_EVENTBUS_SERVICE: false
+  EVENTBUS_SEND_TIMEOUT: 300000
+  MAX_FILE_SIZE_IN_MB: 5
+  MAX_IMAGE_FILE_SIZE_IN_MB: 5
+  AVATAR_THUMBNAIL_SIZE_IN_PIXEL: 50
+  AVATAR_ORIGINAL_SIZE_IN_PIXEL: 300
+  BANNER_IMAGE_ORIGINAL_SIZE_IN_PIXEL: 700
+  SLIDESHOW_IMAGE_ORIGINAL_SIZE_IN_PIXEL: 930
+  SUPPORT_EMAIL: danu.argi@gmail.com
+  DISABLE_MAILER: false
+  MAILER_SENDER: Starter <no-reply@starter.com>
+  MAILER_USERNAME: api
+  MAILER_PASSWORD: ${{ secrets.PRODUCTION_MAILER_PASSWORD }}
+  MAILER_URL: https://api.mailgun.net/v3/starter.com/messages
+  DISABLE_TWILIO_API: true
+  TWILIO_ACCOUNT_SID: twilio_account_id
+  TWILIO_AUTH_TOKEN: twilio_auth_token
+  TWILIO_REGION: twilio_region
+  TWILIO_EDGE: twilio_edge
+  TWILIO_SENDER_NAME: twilio_sender_name
+  TWILIO_SENDER_PHONE_NUMBER: twilio_sender_phone
+  DISABLE_AWS_S3: false
+  AWS_S3_BASE_URL: aws_s3_base_url
+  AWS_S3_ALIAS_URL: aws_s3_alias_url
+  AWS_S3_ACCESS_KEY: ${{ secrets.PRODUCTION_AWS_S3_ACCESS_KEY }}
+  AWS_S3_SECRET_KEY: ${{ secrets.PRODUCTION_AWS_S3_SECRET_KEY }}
+  AWS_S3_REGION_NAME: aws_s3_region_name
+  AWS_S3_BUCKET_NAME: aws_s3_bucket_name
+  AWS_S3_AVATAR_FOLDER: avatar
+  AWS_S3_BANNERS_FOLDER: b
+  AWS_S3_LOGO_FOLDER: logo
+  DISABLE_GOOGLE_API: false
+  GOOGLE_API_CLIENT_ID: google_api_client_id
+  GOOGLE_API_CLIENT_SECRET: google_api_client_secret
+  GOOGLE_BASE_URL: https://www.google.com
+  GOOGLE_RECAPTCHA_SERVER_KEY: ${{ secrets.PRODUCTION_GOOGLE_RECAPTCHA_SERVER_KEY }}
+  DISABLE_FIREBASE: true
+  FIREBASE_PROJECT_ID: firebase_project_id
+  FIREBASE_API_BASE_URL: firebase_api_base_url
+  FIREBASE_SERVICE_ACCOUNT_KEY: firebase_service_account_key_path
+  FIREBASE_WEB_PUSH_TTL: 86400
+  FIREBASE_WEB_PUSH_URGENCY: normal
+  DISABLE_SLACK_API: true
+  SLACK_WEBHOOK_URL: slack_webhook_url
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  release:
+    runs-on: jn-linux-runners
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ vars.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and Push Pre-Production Image
+        id: build-push
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./dockerfile-staging
+          push: true
+          tags: |
+            ${{ vars.DOCKERHUB_USERNAME }}/starter-be:rc
+            ${{ vars.DOCKERHUB_USERNAME }}/starter-be:${{ github.sha }}
+          cache-from: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/starter-be:cache
+          cache-to: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/starter-be:cache,mode=max
+
+      - name: Deploy the app to DigitalOcean App Platform
+        uses: digitalocean/app_action/deploy@v2
+        with:
+          token: ${{ secrets.DO_TOKEN_APP_PLATFORM }}
+          project_id: put_your_DO_project_ID_here
+          app_spec_location: ".do/app-spec.staging.yml"
+        env:
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          IMAGE_DIGEST: ${{ steps.build-push.outputs.digest }}
