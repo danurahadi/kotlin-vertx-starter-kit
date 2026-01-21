@@ -1,0 +1,14 @@
+services:
+
+  postgresql:
+    container_name: postgresql
+    hostname: postgresql
+    image: postgres:18.1
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=PG_PASS
+      - PGDATA=/var/lib/postgresql/18/data
+    ports:
+      - '5432:5432'
+    volumes:
+      - 'your_local_data_path:/var/lib/postgresql/18/data'

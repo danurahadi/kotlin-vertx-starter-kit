@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="activity_logs" pkName="pk_activity_logs">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_activity_logs_external_id"/>
+            <column name="description" type="clob"/>
+            <column name="actor_id" type="bigint" references="admins.id" foreignKeyName="fk_activity_logs_actor_id" foreignKeyIndex="ix_activity_logs_actor_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+        </createTable>
+    </changeSet>
+</migration>

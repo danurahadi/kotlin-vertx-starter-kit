@@ -1,0 +1,10 @@
+plugins {
+    id 'java-library'
+
+    // Apply the common convention plugin for shared build configuration between module / subprojects.
+    id 'backend.v1.kotlin-common-conventions'
+}
+
+dependencies {
+    api "io.vertx:vertx-redis-client:$vertxVersion"
+}

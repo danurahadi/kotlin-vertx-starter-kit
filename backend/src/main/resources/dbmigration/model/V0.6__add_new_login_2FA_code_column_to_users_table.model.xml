@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <addColumn tableName="users">
+            <column name="login2_facode" type="varchar(10)"/>
+            <column name="login2_facode_expired_on" type="localdatetime"/>
+            <column name="last_send2_facode" type="localdatetime"/>
+        </addColumn>
+    </changeSet>
+</migration>

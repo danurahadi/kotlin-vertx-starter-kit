@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <createTable name="access" pkName="pk_access">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_access_external_id"/>
+            <column name="module_id" type="bigint" references="modules.id" foreignKeyName="fk_access_module_id" foreignKeyIndex="ix_access_module_id"/>
+            <column name="name" type="varchar(150)" defaultValue="''" unique="uq_access_name"/>
+            <column name="alias" type="varchar(150)" defaultValue="''"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_access_created_by_id" foreignKeyIndex="ix_access_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_access_last_updated_by_id" foreignKeyIndex="ix_access_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="access_roles" pkName="pk_access_roles">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="access_id" type="bigint" references="access.id" foreignKeyName="fk_access_roles_access_id" foreignKeyIndex="ix_access_roles_access_id"/>
+            <column name="role_id" type="bigint" references="roles.id" foreignKeyName="fk_access_roles_role_id" foreignKeyIndex="ix_access_roles_role_id"/>
+            <column name="permission" type="varchar(7)" checkConstraint="check ( permission in ('ALLOWED','DENIED'))" checkConstraintName="ck_access_roles_permission"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_access_roles_created_by_id" foreignKeyIndex="ix_access_roles_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_access_roles_last_updated_by_id" foreignKeyIndex="ix_access_roles_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="admins" pkName="pk_admins">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="cms_user_id" type="bigint" uniqueOneToOne="uq_admins_cms_user_id" references="users.id" foreignKeyName="fk_admins_cms_user_id"/>
+            <column name="external_id" type="varchar(16)" unique="uq_admins_external_id"/>
+            <column name="full_name" type="varchar(200)" defaultValue="''"/>
+            <column name="thumbnail_profile_image" type="varchar(255)"/>
+            <column name="original_profile_image" type="varchar(255)"/>
+            <column name="gender" type="varchar(9)" checkConstraint="check ( gender in ('MALE','FEMALE','UNDEFINED'))" checkConstraintName="ck_admins_gender"/>
+            <column name="birthday" type="date"/>
+            <column name="complete" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="superadmin" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="admin_notifications" pkName="pk_admin_notifications">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_admin_notifications_external_id"/>
+            <column name="admin_id" type="bigint" references="admins.id" foreignKeyName="fk_admin_notifications_admin_id" foreignKeyIndex="ix_admin_notifications_admin_id"/>
+            <column name="message" type="clob"/>
+            <column name="status" type="varchar(4)" checkConstraint="check ( status in ('NEW','READ'))" checkConstraintName="ck_admin_notifications_status"/>
+            <column name="actor_id" type="bigint" references="users.id" foreignKeyName="fk_admin_notifications_actor_id" foreignKeyIndex="ix_admin_notifications_actor_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="api_keys" pkName="pk_api_keys">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_api_keys_external_id"/>
+            <column name="cms_user_id" type="bigint" uniqueOneToOne="uq_api_keys_cms_user_id" references="users.id" foreignKeyName="fk_api_keys_cms_user_id"/>
+            <column name="access_token" type="varchar(510)"/>
+            <column name="expired_time" type="localdatetime"/>
+            <column name="ip_address" type="varchar(50)"/>
+            <column name="location" type="varchar(50)"/>
+            <column name="browser" type="varchar(255)"/>
+            <column name="operating_system" type="varchar(255)"/>
+            <column name="reg_token" type="varchar(510)"/>
+            <column name="imei" type="varchar(16)"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="app_settings" pkName="pk_app_settings">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_app_settings_external_id"/>
+            <column name="setting_group_id" type="bigint" references="setting_groups.id" foreignKeyName="fk_app_settings_setting_group_id" foreignKeyIndex="ix_app_settings_setting_group_id"/>
+            <column name="setting_key" type="varchar(150)" unique="uq_app_settings_setting_key"/>
+            <column name="setting_value" type="varchar(50)"/>
+            <column name="setting_type" type="varchar(8)" defaultValue="'BOOLEAN'" checkConstraint="check ( setting_type in ('BOOLEAN','TEXT','NUMERIC','RADIO','MULTIPLE'))" checkConstraintName="ck_app_settings_setting_type"/>
+            <column name="setting_options" type="varchar[]"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_app_settings_created_by_id" foreignKeyIndex="ix_app_settings_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_app_settings_last_updated_by_id" foreignKeyIndex="ix_app_settings_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="banners" pkName="pk_banners">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_banners_external_id"/>
+            <column name="title" type="varchar"/>
+            <column name="description" type="varchar"/>
+            <column name="image" type="varchar"/>
+            <column name="link_url" type="varchar"/>
+            <column name="type" type="varchar(18)" checkConstraint="check ( type in ('LEFT_BANNER','RIGHT_BANNER','HOMEPAGE_SLIDESHOW'))" checkConstraintName="ck_banners_type"/>
+            <column name="sequence" type="integer" defaultValue="0" notnull="true"/>
+            <column name="status" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="users" pkName="pk_users">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="role_id" type="bigint" references="roles.id" foreignKeyName="fk_users_role_id" foreignKeyIndex="ix_users_role_id"/>
+            <column name="external_id" type="varchar(16)" unique="uq_users_external_id"/>
+            <column name="email" type="varchar(100)" unique="uq_users_email"/>
+            <column name="username" type="varchar(50)" unique="uq_users_username"/>
+            <column name="password" type="varchar(500)"/>
+            <column name="email_verified" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="new_email" type="varchar(100)" unique="uq_users_new_email"/>
+            <column name="phone" type="varchar(50)" unique="uq_users_phone"/>
+            <column name="phone_verified" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="token" type="varchar(20)"/>
+            <column name="token_expired_on" type="localdatetime"/>
+            <column name="token_phone" type="varchar(10)"/>
+            <column name="token_phone_expired_on" type="localdatetime"/>
+            <column name="forgot_code" type="varchar(20)"/>
+            <column name="forgot_code_expired_on" type="localdatetime"/>
+            <column name="last_send_token" type="localdatetime"/>
+            <column name="last_send_token_phone" type="localdatetime"/>
+            <column name="last_login" type="localdatetime"/>
+            <column name="last_seen" type="localdatetime"/>
+            <column name="online_status" type="varchar(6)" defaultValue="'AWAY'" notnull="true" checkConstraint="check ( online_status in ('ACTIVE','AWAY'))" checkConstraintName="ck_users_online_status"/>
+            <column name="status" type="varchar(9)" notnull="true" checkConstraint="check ( status in ('PENDING','ACTIVE','SUSPENDED'))" checkConstraintName="ck_users_status"/>
+            <column name="locked" type="boolean" defaultValue="false" notnull="true"/>
+            <column name="auto_unlocked_at" type="localdatetime"/>
+            <column name="login_attempt" type="integer" defaultValue="0" notnull="true"/>
+            <column name="created_by_id" type="bigint" references="users.id" foreignKeyName="fk_users_created_by_id" foreignKeyIndex="ix_users_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="users.id" foreignKeyName="fk_users_last_updated_by_id" foreignKeyIndex="ix_users_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="user_settings" pkName="pk_user_settings">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="cms_user_id" type="bigint" uniqueOneToOne="uq_user_settings_cms_user_id" references="users.id" foreignKeyName="fk_user_settings_cms_user_id"/>
+            <column name="timezone_offset" type="bigint" notnull="true"/>
+            <column name="odds_format" type="varchar(5)"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="countries" pkName="pk_countries">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_countries_external_id"/>
+            <column name="alpha2_code" type="varchar(2)"/>
+            <column name="alpha3_code" type="varchar(3)"/>
+            <column name="name" type="varchar(100)" unique="uq_countries_name"/>
+            <column name="calling_code" type="varchar(10)"/>
+            <column name="currency" type="varchar"/>
+            <column name="currency_symbol" type="varchar"/>
+            <column name="geoname_id" type="varchar"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_countries_created_by_id" foreignKeyIndex="ix_countries_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_countries_last_updated_by_id" foreignKeyIndex="ix_countries_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="internal_settings" pkName="pk_internal_settings">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="setting_key" type="varchar(150)" unique="uq_internal_settings_setting_key"/>
+            <column name="setting_value" type="varchar(50)"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="modules" pkName="pk_modules">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_modules_external_id"/>
+            <column name="code" type="varchar(5)" unique="uq_modules_code"/>
+            <column name="name" type="varchar(100)" unique="uq_modules_name"/>
+            <column name="summary" type="varchar(255)"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_modules_created_by_id" foreignKeyIndex="ix_modules_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_modules_last_updated_by_id" foreignKeyIndex="ix_modules_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="module_roles" pkName="pk_module_roles">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="module_id" type="bigint" references="modules.id" foreignKeyName="fk_module_roles_module_id" foreignKeyIndex="ix_module_roles_module_id"/>
+            <column name="role_id" type="bigint" references="roles.id" foreignKeyName="fk_module_roles_role_id" foreignKeyIndex="ix_module_roles_role_id"/>
+            <column name="permission" type="varchar(7)" checkConstraint="check ( permission in ('ALLOWED','DENIED'))" checkConstraintName="ck_module_roles_permission"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_module_roles_created_by_id" foreignKeyIndex="ix_module_roles_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_module_roles_last_updated_by_id" foreignKeyIndex="ix_module_roles_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="roles" pkName="pk_roles">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_roles_external_id"/>
+            <column name="name" type="varchar(50)"/>
+            <column name="alias" type="varchar(50)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_roles_created_by_id" foreignKeyIndex="ix_roles_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_roles_last_updated_by_id" foreignKeyIndex="ix_roles_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="setting_groups" pkName="pk_setting_groups">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="external_id" type="varchar(16)" unique="uq_setting_groups_external_id"/>
+            <column name="name" type="varchar(150)" unique="uq_setting_groups_name"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_setting_groups_created_by_id" foreignKeyIndex="ix_setting_groups_created_by_id"/>
+            <column name="last_updated_by_id" type="bigint" references="admins.id" foreignKeyName="fk_setting_groups_last_updated_by_id" foreignKeyIndex="ix_setting_groups_last_updated_by_id"/>
+            <column name="created_at" type="localdatetime" notnull="true"/>
+            <column name="last_updated_at" type="localdatetime" notnull="true"/>
+        </createTable>
+        <createTable name="temp_files" pkName="pk_temp_files">
+            <column name="id" type="bigint" primaryKey="true"/>
+            <column name="object_key" type="varchar"/>
+            <column name="media_link" type="varchar"/>
+            <column name="type" type="varchar(11)" checkConstraint="check ( type in ('ATTACHMENTS'))" checkConstraintName="ck_temp_files_type"/>
+            <column name="expired_at" type="localdatetime"/>
+            <column name="created_at" type="localdatetime" defaultValue="'2022-12-12 00:00:00'" notnull="true"/>
+        </createTable>
+    </changeSet>
+</migration>

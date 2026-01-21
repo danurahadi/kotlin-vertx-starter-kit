@@ -1,0 +1,90 @@
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
+import com.github.jengelman.gradle.plugins.shadow.transformers.ServiceFileTransformer
+
+plugins {
+    id "io.spring.dependency-management" version '1.1.7'
+    id 'io.ebean' version '17.2.0'
+
+    id "org.flywaydb.flyway" version '11.20.2'
+    id 'com.gradleup.shadow' version '9.3.1'
+
+    // Apply the application convention plugin for shared build configuration between module / subprojects.
+    id 'backend.v1.kotlin-application-conventions'
+}
+
+application {
+    mainClass.set('com.starter.app.app.Application')
+}
+
+//shadowJar {
+//    zip64 = true
+//    archivesBaseName = "starter"
+//    archiveClassifier = "backend"
+//    mergeServiceFiles()
+//}
+
+shadowJar {
+//    enableAutoRelocation = true
+//    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+//    failOnDuplicateEntries = false
+
+    zip64 = true
+    archiveBaseName = "starter"
+    archiveClassifier = "backend"
+
+    // This single call will merge ALL service files
+    mergeServiceFiles()
+
+    // Use ServiceFileTransformer for proper service file merging
+    transform(ServiceFileTransformer)
+
+    // Explicitly handle the EL service file
+    transform(AppendingTransformer) {
+        resource = 'META-INF/services/jakarta.el.ExpressionFactory'
+    }
+
+    exclude 'META-INF/*.SF'
+    exclude 'META-INF/*.DSA'
+    exclude 'META-INF/*.RSA'
+
+    duplicatesStrategy = DuplicatesStrategy.WARN
+
+    // Optional: specify main class
+    manifest {
+        attributes 'Main-Class': 'com.starter.app.app.Application'
+    }
+
+//    minimize()
+}
+
+tasks.register('stagingDocker', Zip) {
+    dependsOn 'jar', 'shadowJar'
+    from("${projectDir}/deployment/staging/") {
+        include("*/*", "*")
+    }
+
+    from("${buildDir}/libs/") {
+        into "backend"
+        include '*.jar'
+    }
+
+    zip64 = true
+    archiveFileName = "docker-starter-backend.zip"
+    destinationDirectory = new File("${rootDir}/", 'dist')
+}
+
+tasks.register('prodDocker', Zip) {
+    dependsOn 'jar', 'shadowJar'
+    from("${projectDir}/deployment/production/") {
+        include("*/*", "*")
+    }
+
+    from("${buildDir}/libs/") {
+        into "backend"
+        include '*.jar'
+    }
+
+    zip64 = true
+    archiveFileName = "docker-starter-backend.zip"
+    destinationDirectory = new File("${rootDir}/", 'dist')
+}

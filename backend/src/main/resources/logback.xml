@@ -1,0 +1,59 @@
+<configuration>
+<!--    <appender name="SYSLOG-TLS" class="com.papertrailapp.logback.Syslog4jAppender">-->
+<!--        <layout class="ch.qos.logback.classic.PatternLayout">-->
+<!--            <pattern>[%thread] %-5level %logger{35}: %msg %marker%n%ex{short}</pattern>-->
+<!--        </layout>-->
+
+<!--        <syslogConfig class="org.productivity.java.syslog4j.impl.net.tcp.ssl.SSLTCPNetSyslogConfig">-->
+<!--            &lt;!&ndash; remote system to log to &ndash;&gt;-->
+<!--            <host>logs4.papertrailapp.com</host>-->
+<!--            &lt;!&ndash; remote port to log to &ndash;&gt;-->
+<!--            <port>18879</port>-->
+<!--            &lt;!&ndash; program name to log as &ndash;&gt;-->
+<!--            <ident>starter-backend</ident>-->
+<!--            &lt;!&ndash; max log message length in bytes &ndash;&gt;-->
+<!--            <maxMessageLength>128000</maxMessageLength>-->
+<!--        </syslogConfig>-->
+<!--    </appender>-->
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender" level="INFO">
+        <encoder>
+            <pattern>%date{dd MMM yyyy;HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %marker%n%ex{short}</pattern>
+        </encoder>
+    </appender>
+
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>info</level>
+        </filter>
+        <encoder>
+            <pattern>%date{dd MMM yyyy;HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg %marker%n%ex{short}</pattern>
+        </encoder>
+        <file>/var/log/starter/backend.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>/var/log/starter/backend.log.%d{yyyy-MM-dd}</fileNamePattern>
+            <maxHistory>30</maxHistory>
+        </rollingPolicy>
+    </appender>
+
+
+    <logger name="io.vertx" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="id.yoframework" level="INFO">
+        <appender-ref ref="STDOUT"/>
+    </logger>
+    <logger name="com.starter" level="INFO">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+<!--        <appender-ref ref="SYSLOG-TLS"/>-->
+    </logger>
+
+    <logger name="io.netty.util.internal.PlatformDependent" level="ERROR">
+        <appender-ref ref="STDOUT"/>
+        <appender-ref ref="FILE"/>
+    </logger>
+
+    <root level="INFO">
+    </root>
+</configuration>

@@ -1,0 +1,126 @@
+services:
+  backend:
+    container_name: backend
+    hostname: backend
+    build: backend
+    restart: unless-stopped
+    #    expose:
+    #      - 7000
+    ports:
+      - '8250:7000'
+    depends_on:
+      - postgresql
+    environment:
+      - ENV=PRODUCTION
+      - APP_NAME=Starter App
+      - COMPANY_EMAIL=hello@starter.com
+      - COMPANY_PHONE=021-1234-567
+      - COMPANY_FACEBOOK_LINK=https://web.facebook.com/starter
+      - COMPANY_INSTAGRAM_LINK=https://instagram.com/starter
+      - HTTP_PORT=7000
+      - DATABASE_URL=jdbc:postgresql://postgresql:5432/starter_db
+      - DATABASE_USER=db_user
+      - DATABASE_PASSWORD=db_password
+      - DATABASE_DRIVER_CLASSNAME=org.postgresql.Driver
+      - CURRENT_DB_MIGRATION_NAME=initial version
+      - CURRENT_DB_MIGRATION_VERSION="0.1"
+      - CURRENT_DB_MIGRATION_DROPS_FOR=
+      - FLYWAY_DATABASE_USER=db_user
+      - FLYWAY_DATABASE_PASSWORD=db_password
+      - ENABLE_DATA_INITIALIZER=false
+      - MAX_LOGIN_ATTEMPT=5
+      - AUTO_UNLOCKED_ACCOUNT_AFTER=1
+      - CORS_ALLOWED_ORIGIN_PATTERN=https://starter.com|^http:\/\/([a-zA-Z0-9-]+\.)?localhost(:[0-9]+)?\/?$
+      - AES_ENCRYPTION_TOKEN=Starter79-80b2-f8a74e
+      - JWT_AUTH_KEYSTORE_PATH=keystore.jceks
+      - JWT_AUTH_KEYSTORE_PASSWORD=HL-Core-Team-101019
+      - JWT_AUTH_EXPIRES_IN_SECONDS=86400
+      - JWT_AUTH_ALGORITHM=HS256
+      - FE_ADMIN_BASE_URL=https://starter.com
+      - API_BASE_URL=https://api.starter.com/v1
+      - UPLOADED_FILE_RETENTION_PERIOD_IN_HOURS=24
+      - DISABLE_SCHEDULER=false
+      - TEMP_FILE_CRON_EXPRESSION=0 0 0/1 1/1 * ? *
+      - AUTO_UNLOCK_USER_CRON_EXPRESSION=0 0/5 * ? * * *
+      - DISABLE_EVENTBUS_SERVICE=false
+      - EVENTBUS_SEND_TIMEOUT=300000
+      - MAX_FILE_SIZE_IN_MB=5
+      - MAX_IMAGE_FILE_SIZE_IN_MB=5
+      - AVATAR_THUMBNAIL_SIZE_IN_PIXEL=50
+      - AVATAR_ORIGINAL_SIZE_IN_PIXEL=300
+      - BANNER_IMAGE_ORIGINAL_SIZE_IN_PIXEL=700
+      - SLIDESHOW_IMAGE_ORIGINAL_SIZE_IN_PIXEL=930
+      - SUPPORT_EMAIL=danu.argi@gmail.com
+      - DISABLE_MAILER=false
+      - MAILER_SENDER=Hello <no-reply@starter.com>
+      - MAILER_USERNAME=api
+      - MAILER_PASSWORD=mailgun_token
+      - MAILER_URL=https://api.mailgun.net/v3/starter.com/messages
+      - DISABLE_TWILIO_API=true
+      - TWILIO_ACCOUNT_SID=twilio_account_sid
+      - TWILIO_AUTH_TOKEN=twilio_auth_token
+      - TWILIO_REGION=twilio_region
+      - TWILIO_EDGE=twilio_edge
+      - TWILIO_SENDER_NAME=twilio_sender_name
+      - TWILIO_SENDER_PHONE_NUMBER=twilio_sender_phone_number
+      - DISABLE_AWS_S3=true
+      - AWS_S3_BASE_URL=aws_s3_base_url
+      - AWS_S3_ALIAS_URL=aws_s3_alias_url
+      - AWS_S3_ACCESS_KEY=aws_s3_access_key
+      - AWS_S3_SECRET_KEY=aws_s3_secret_key
+      - AWS_S3_REGION_NAME=aws_s3_region_name
+      - AWS_S3_BUCKET_NAME=aws_s3_bucket_name
+      - AWS_S3_AVATAR_FOLDER=avatar
+      - AWS_S3_BANNERS_FOLDER=b
+      - AWS_S3_LOGO_FOLDER=logo
+      - DISABLE_GOOGLE_API=true
+      - GOOGLE_API_CLIENT_ID=google_api_client_id
+      - GOOGLE_API_CLIENT_SECRET=google_api_client_secret
+      - GOOGLE_BASE_URL=google_recaptcha_base_url
+      - GOOGLE_RECAPTCHA_SERVER_KEY=google_recaptcha_server_key
+      - DISABLE_FIREBASE=true
+      - FIREBASE_PROJECT_ID=firebase_project_id
+      - FIREBASE_API_BASE_URL=firebase_api_base_url
+      - FIREBASE_SERVICE_ACCOUNT_KEY=firebase_sa_key_path
+      - FIREBASE_WEB_PUSH_TTL=86400
+      - FIREBASE_WEB_PUSH_URGENCY=normal
+      - DISABLE_SLACK_API=true
+      - SLACK_WEBHOOK_URL=slack_webhook_url
+    volumes:
+      - /opt/starter/log:/var/log/starter
+      - /tmp:/tmp
+#    labels:
+#      - traefik.enable=true
+#      - traefik.docker.network=proxy
+#      - traefik.http.routers.backend.entrypoints=https
+#      - traefik.http.routers.backend.rule=Host(`api.starter.com`) && PathPrefix(`/v1`)
+#      - traefik.http.services.backend.loadbalancer.server.port=7000
+#      - traefik.http.routers.backend.middlewares=api-strip
+#      - traefik.http.middlewares.api-strip.stripprefix.prefixes=/v1
+    networks:
+      - app-tier
+  #      - proxy
+
+
+  postgresql:
+    container_name: postgresql
+    hostname: postgresql
+    image: postgres:18.1
+    restart: unless-stopped
+    environment:
+      - POSTGRES_PASSWORD=db_password
+      - PGDATA=/var/lib/postgresql/data
+    ports:
+      - '5433:5432'
+    volumes:
+      - '/mnt/starter/data:/var/lib/postgresql/18/data'
+    #      - '/mnt/starter/postgresql/conf/my-postgres-18.conf:/etc/postgresql/postgresql.conf'
+    networks:
+      - app-tier
+
+networks:
+  app-tier:
+    driver: bridge
+#  proxy:
+#    driver: bridge
+#    external: true

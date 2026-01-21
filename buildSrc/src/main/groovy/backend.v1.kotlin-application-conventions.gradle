@@ -1,0 +1,85 @@
+plugins {
+    id "idea"
+    id "application"
+
+    // Apply the common convention plugin for shared build configuration between module / subprojects.
+    id 'backend.v1.kotlin-common-conventions'
+}
+
+group 'com.starter'
+//version '1.6.1'
+
+dependencyManagement {
+    imports {
+        mavenBom "com.amazonaws:aws-java-sdk-bom:$awsVersion"
+    }
+}
+
+dependencies {    
+    api project(":lib")
+    api "com.github.jasoet.yoframework:quartz:$yoVersion"
+
+    api "io.vertx:vertx-auth-jwt:$vertxVersion"
+    api "org.postgresql:postgresql:${postgreSqlVersion}"
+    api "org.flywaydb:flyway-database-postgresql:$flywayVersion"
+
+//    kapt "io.ebean:kotlin-querybean-generator:$ebeanQueryGeneratorVersion"
+//    api "io.vertx:vertx-kafka-client:${vertxVersion}"
+
+    api "org.apache.commons:commons-csv:${commonCsvVersion}"
+    api "javax.xml.bind:jaxb-api:${jaxbApiVersion}"
+
+    api "javax.activation:activation:${jaxActivationVersion}"
+    runtimeOnly "org.glassfish.jaxb:jaxb-runtime:${jaxGlassfishVersion}"
+
+    api "org.glassfish.jersey.core:jersey-client:${jerseyVersion}"
+    api "org.glassfish.jersey.inject:jersey-hk2:${jerseyVersion}"
+
+    api "org.glassfish.jersey.media:jersey-media-jaxb:${jerseyVersion}"
+    api "org.glassfish.jersey.media:jersey-media-json-jackson:${jerseyVersion}"
+
+    api "org.glassfish.jersey.media:jersey-media-moxy:${jerseyVersion}"
+    api "com.sun.jersey.contribs:jersey-multipart:${jerseyMultipartVersion}"
+
+    api "com.google.api-client:google-api-client:${googleApiClientVersion}"
+    api "com.google.cloud:google-cloud-storage:${gcpVersion}"
+    api "com.google.auth:google-auth-library-oauth2-http:${googleAuthVersion}"
+
+    api "com.amazonaws:aws-java-sdk-s3:$awsVersion"
+    api "io.ebean:ebean-agent:${ebeanAgentVersion}"
+
+    api "com.twilio.sdk:twilio:$twilioSdkVersion"
+    api "org.sejda.imageio:webp-imageio:$webpImageIOVersion"
+
+    api "com.monitorjbl:xlsx-streamer:${xlsxStreamerVersion}"
+    api "net.coobird:thumbnailator:${thumbnailatorVersion}"
+    api "com.papertrailapp:logback-syslog4j:$papertrailLogbackVersion"
+}
+
+//tasks {
+//    idea {
+//        module {
+//            downloadJavadoc = true
+//            downloadSources = true
+//
+//            testSourceDirs += file('build/generated/source/kapt/test')
+//            sourceDirs += file('build/generated/source/kapt/main')
+//
+//            testSourceDirs += file('build/generated/source/kaptKotlin/test')
+//            sourceDirs += file('build/generated/source/kaptKotlin/main')
+//        }
+//    }
+//}
+
+//sourceSets {
+//    main.kotlin.srcDirs += [file("$buildDir/generated/source/kaptKotlin/main")]
+//}
+//
+//kapt {
+//    correctErrorTypes = true
+//}
+
+ebean {
+    debugLevel = 1 //1 - 9
+    kotlin = true
+}

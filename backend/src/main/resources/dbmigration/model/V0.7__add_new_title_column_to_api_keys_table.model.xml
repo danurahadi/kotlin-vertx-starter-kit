@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<migration xmlns="http://ebean-orm.github.io/xml/ns/dbmigration">
+    <changeSet type="apply">
+        <addColumn tableName="api_keys">
+            <column name="title" type="varchar(150)" defaultValue="'Internal Client App'"/>
+            <column name="created_by_id" type="bigint" references="admins.id" foreignKeyName="fk_api_keys_created_by_id" foreignKeyIndex="ix_api_keys_created_by_id"/>
+        </addColumn>
+    </changeSet>
+</migration>

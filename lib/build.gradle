@@ -1,0 +1,4 @@
+plugins {
+    // Apply the library convention plugin for shared build configuration between module / subprojects.
+    id 'backend.v1.kotlin-library-conventions'
+}

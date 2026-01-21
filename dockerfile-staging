@@ -1,0 +1,33 @@
+# Compile source code, produce JAR file, & run the JAR file via ENTRYPOINT
+FROM azul/zulu-openjdk:25-latest AS base
+
+LABEL org.opencontainers.image.authors="Argi Danu Rahadi <danu.argi@gmail.com>"
+WORKDIR /opt/app
+
+FROM azul/zulu-openjdk:25-jre-headless-latest AS jre
+
+FROM base AS builder
+
+COPY backend/ backend
+#COPY newrelic/ newrelic
+COPY buildSrc/ buildSrc
+
+COPY lib/ lib
+COPY gradle/ gradle
+COPY build.gradle gradle.properties gradlew settings.gradle ./
+
+RUN ./gradlew clean compile shadowJar
+
+FROM jre AS release
+RUN mkdir -p /var/log/starter && chmod -R 777 /var/log/starter
+
+COPY --from=builder /opt/app/backend/build/libs/starter-backend.jar /starter-backend.jar
+
+#COPY --from=builder /opt/app/newrelic/newrelic.jar /newrelic.jar
+#COPY --from=builder /opt/app/newrelic/newrelic.yml /newrelic.yml
+
+EXPOSE 7000
+VOLUME ["/var/log"]
+
+#ENTRYPOINT ["java", "-Xmx1g", "-Xms1g", "-Duser.timezone=Asia/Jakarta", "-Xshare:auto", "-XX:+UseZGC", "-XX:MaxMetaspaceSize=512m", "-XX:+HeapDumpOnOutOfMemoryError", "-Djava.net.preferIPv4Stack=true", "-Djava.net.preferIPv4Addresses=true", "-javaagent:/newrelic.jar", "-jar", "/starter-backend.jar"]
+ENTRYPOINT ["java", "-Xmx2g", "-Xms1g", "-XX:MaxMetaspaceSize=512m", "-Xshare:auto", "-XX:+UseZGC", "-XX:+HeapDumpOnOutOfMemoryError", "-Djava.net.preferIPv4Stack=true", "-Djava.net.preferIPv4Addresses=true", "-jar", "/starter-backend.jar"]

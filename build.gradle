@@ -1,0 +1,38 @@
+plugins {
+    id "com.google.devtools.ksp" version '2.3.4' apply false
+    id "dev.detekt" version '2.0.0-alpha.1' apply false
+}
+
+ext {
+    yoVersion = "1.0"
+    kotlinVersion = "2.3.0"
+    coroutineVersion = "1.10.2"
+    vertxVersion = '5.0.7'
+    postgreSqlVersion = '42.7.9'
+    daggerVersion = '2.58'
+    jpaVersion = '3.2.0'
+    flywayVersion = '11.20.2'
+    commonCsvVersion = '1.12.0'
+    papertrailLogbackVersion = '1.0.0'
+    logtailLogbackVersion = '0.3.4'
+    restAssuredVersion = '4.3.3'
+    jerseyVersion = '3.1.9'
+    jerseyMultipartVersion = '1.19.4'
+    gcpVersion = '2.26.0'
+    googleApiClientVersion = '2.2.0'
+    googleAuthVersion = '1.19.0'
+    ebeanAgentVersion = '17.2.0'
+    ebeanQueryGeneratorVersion = '17.2.0'
+    awsVersion = '1.12.782'
+    jaxbApiVersion = '2.3.1'
+    jaxActivationVersion = '1.1.1'
+    jaxGlassfishVersion = '2.3.1'
+    xlsxStreamerVersion = '2.2.0'
+    thumbnailatorVersion = '0.4.20'
+    twilioSdkVersion = '9.9.1'
+    webpImageIOVersion = '0.1.6'
+}
+
+tasks.register('cleanAll') { dependsOn "lib:clean", "backend:clean" }
+
+tasks.register('compile') { dependsOn "lib:testClasses", "backend:testClasses" }
