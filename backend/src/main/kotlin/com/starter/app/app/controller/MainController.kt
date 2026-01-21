@@ -93,7 +93,7 @@ class MainController @Inject constructor(
         jsonObjectOf(
             "status" to "running",
             "version" to "1.0",
-            "message" to "Welcome to JogjaNode Starter API v1"
+            "message" to "Welcome to Starter API v1"
         )
     }
 
