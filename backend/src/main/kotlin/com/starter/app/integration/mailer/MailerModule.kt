@@ -3,6 +3,7 @@ package com.starter.app.integration.mailer
 import com.starter.library.module.EnvModule
 import dagger.Module
 import dagger.Provides
+import id.yoframework.web.exception.orDataError
 import io.vertx.core.json.JsonObject
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ObsoleteCoroutinesApi
@@ -34,7 +35,7 @@ class MailerModule {
     @Named("mailerSender")
     fun mailerSender(config: JsonObject): String {
         val key = "MAILER_SENDER"
-        return config.getString(key, "Jogja Node <no-reply@jogjanode.com>")
+        return config.getString(key) orDataError "MAILER_SENDER config is required."
     }
 
     @Provides
@@ -42,9 +43,11 @@ class MailerModule {
     @Named("mailerAccount")
     fun mailerAccount(config: JsonObject): Pair<String, String> {
         val userNameKey = "MAILER_USERNAME"
-        val username = config.getString(userNameKey, "api")
+        val username = config.getString(userNameKey) orDataError "MAILER_USERNAME config is required."
+
         val passwordKey = "MAILER_PASSWORD"
-        val password = config.getString(passwordKey, "key-437e854d374d420e00efa7fe1243b50c")
+        val password = config.getString(passwordKey) orDataError "MAILER_PASSWORD config is required."
+
         return username to password
     }
 
@@ -53,7 +56,7 @@ class MailerModule {
     @Named("mailerUrl")
     fun mailerUrl(config: JsonObject): String {
         val key = "MAILER_URL"
-        return config.getString(key, "https://api.mailgun.net/v3/mg.jogjanode.com/messages")
+        return config.getString(key) orDataError "MAILER_URL config is required."
     }
 
     @Provides
