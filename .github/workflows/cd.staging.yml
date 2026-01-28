@@ -115,8 +115,8 @@ jobs:
           tags: |
             ${{ vars.DOCKERHUB_USERNAME }}/starter-be:rc
             ${{ vars.DOCKERHUB_USERNAME }}/starter-be:${{ github.sha }}
-          cache-from: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/starter-be:cache
-          cache-to: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/starter-be:cache,mode=max
+          cache-from: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/starter-be:cache-staging
+          cache-to: type=registry,ref=${{ vars.DOCKERHUB_USERNAME }}/starter-be:cache-staging,mode=max
 
       - name: Deploy the app to DigitalOcean App Platform
         uses: digitalocean/app_action/deploy@v2
