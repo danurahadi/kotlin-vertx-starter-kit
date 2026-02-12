@@ -21,14 +21,21 @@
 - User Notification :white_check_mark:
 - User Activity Log :white_check_mark:
 - Max Login Attempt (configurable) :white_check_mark:
+- Verify Google ID Token (from Sign-In With Google in the client) :white_check_mark:
 - Verify Google Recaptcha Token using Google Public API :white_check_mark:
-- Adaptive Rate Limiter using Vert.x Circuit Breaker - WIP
 
 
+- DB Migration using Flyway :white_check_mark:
 - Sending Email using Mailgun :white_check_mark:
 - Sending SMS using Twilio :white_check_mark:
 - Publish Vert.x Event Bus to client (real-time updates) :white_check_mark:
-- Upload File to DO Spaces :white_check_mark:
+- Upload Files to AWS, GCP, and DigitalOcean Spaces :white_check_mark:
+
+
+- Adaptive Rate Limiter using Vert.x Circuit Breaker - WIP
+- Redis Integration via Ebean ORM - WIP
+- ElasticSearch Integration - WIP
+- Kafka Producer and Kafka Consumer - WIP
 
 
 - CRON Scheduler using Quartz :white_check_mark:
