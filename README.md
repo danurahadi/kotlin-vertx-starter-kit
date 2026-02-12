@@ -12,6 +12,31 @@
 ## API Docs
 - You can find the Postman Collection & Env JSON file on the docs/ folder
 
+
+## Features :
+
+- User & Profile :white_check_mark:
+- Authentication :white_check_mark:
+- Basic Authorization (RBAC) :white_check_mark:
+- User Notification :white_check_mark:
+- User Activity Log :white_check_mark:
+- Max Login Attempt (configurable) :white_check_mark:
+- Verify Google Recaptcha Token using Google Public API :white_check_mark:
+- Adaptive Rate Limiter using Vert.x Circuit Breaker - WIP
+
+
+- Sending Email using Mailgun :white_check_mark:
+- Sending SMS using Twilio :white_check_mark:
+- Publish Vert.x Event Bus to client (real-time updates) :white_check_mark:
+- Upload File to DO Spaces :white_check_mark:
+
+
+- CRON Scheduler using Quartz :white_check_mark:
+- Deployment Docker & Compose files (Manual to VPS) :white_check_mark:
+- GitHub Workflow files :white_check_mark:
+- DO App Spec files :white_check_mark:
+
+
 ## Prerequisite
 ### To Build Application
 - Java SDK
